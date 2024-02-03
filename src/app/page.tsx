@@ -8,9 +8,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Showcase1 />
-      <Showcase2 />
-      <Teammate />
     </>
   );
 }
