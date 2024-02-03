@@ -38,25 +38,21 @@ const Index = (props: Props) => {
                 <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
                 <div className="flex flex-col">
                   <div className="text-xl">Alex commoner</div>
-                  <div className="text-sm">
-                    Co founder and the front end guy
-                  </div>
+                  <div className="text-sm">Co founder, front end</div>
                 </div>
               </div>
               <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded">
                 <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
                 <div className="flex flex-col">
                   <div className="text-xl">Aryog</div>
-                  <div className="text-sm">Co founder and the back end guy</div>
+                  <div className="text-sm">Co founder, back end </div>
                 </div>
               </div>
               <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded">
                 <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
                 <div className="flex flex-col">
                   <div className="text-xl">Anku</div>
-                  <div className="text-sm">
-                    Co founder and the everything guy
-                  </div>
+                  <div className="text-sm">Co founder, everything</div>
                 </div>
               </div>
             </div>

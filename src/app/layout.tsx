@@ -16,7 +16,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link
+          href="https://db.onlinewebfonts.com/c/b0b8a10e9c97391e66297c8b5398984f?family=Geom+Graphic+W03+Regular"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        style={{
+          fontFamily: "Geom Graphic W03 Regular",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
