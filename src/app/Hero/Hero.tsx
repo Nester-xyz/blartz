@@ -1,4 +1,8 @@
 import React from "react";
+import Image from "next/image";
+import anku from "../../../public/anku.jpeg";
+import defaultImg from "../../../public/default.jpeg";
+import mainImg from "../../../public/main.webp";
 
 type Props = {};
 
@@ -9,10 +13,9 @@ const Index = (props: Props) => {
         <div className=" pt-16 md:row-span-4 flex flex-col-reverse gap-8 md:grid md:grid-cols-3  ">
           <div className="col-span-2 bg-black grid place-items-center">
             <div className="text-left flex flex-col gap-5 w-9/12">
-              <h1 className="text-5xl">Heading</h1>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <h1 className="text-5xl">Blartz ⚡</h1>
+              <p className="text-lg text-primary">
+                The NFT marketplace you've ever wanted.
               </p>
               <div>
                 <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
@@ -25,34 +28,58 @@ const Index = (props: Props) => {
             </div>
           </div>
           <div className=" mx-auto grid place-items-center">
-            <div className="w-80 h-80 md:w-96 md:h-96 border-2 border-primary shadow-2xl rounded-xl grid place-items-center">
-              image
+            <div className="w-80 h-80 md:w-96 md:h-96 border border-primary shadow-2xl rounded-xl grid place-items-center">
+              <Image
+                src={mainImg}
+                className="rounded-xl"
+                alt="main_img"
+              ></Image>
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-4 w-9/12 mx-auto h-fit  md:w-full px-0 md:px-20 pt-10">
-          <div className="text-3xl">Slaves</div>
+          <div className="text-3xl text-primary">Slaves</div>
           <div className="tex-md">
             <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
-              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded">
-                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
-                <div className="flex flex-col">
+              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded-lg">
+                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0">
+                  <Image
+                    className="rounded-full"
+                    src={defaultImg}
+                    alt="anku's profile"
+                  ></Image>
+                </div>
+                <div className="flex flex-col text-primary">
                   <div className="text-xl">Alex commoner</div>
-                  <div className="text-sm">Co founder, front end</div>
+                  <div className="text-sm">Co-founder, Frontend</div>
                 </div>
               </div>
-              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded">
-                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
-                <div className="flex flex-col">
+              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded-lg">
+                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0">
+                  <Image
+                    className="rounded-full"
+                    src={defaultImg}
+                    alt="anku's profile"
+                  ></Image>
+                </div>
+                <div className="flex flex-col text-primary">
                   <div className="text-xl">Aryog</div>
-                  <div className="text-sm">Co founder, back end </div>
+                  <div className="text-sm">
+                    Co-founder, Backend, Smart Contract{" "}
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded">
-                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0"></div>
-                <div className="flex flex-col">
+              <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded-lg">
+                <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0">
+                  <Image
+                    className="rounded-full"
+                    src={anku}
+                    alt="anku's profile"
+                  ></Image>
+                </div>
+                <div className="flex flex-col text-primary">
                   <div className="text-xl">Anku</div>
-                  <div className="text-sm">Co founder, everything</div>
+                  <div className="text-sm">Co founder, Full-Stack</div>
                 </div>
               </div>
             </div>
