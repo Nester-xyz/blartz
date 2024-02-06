@@ -15,7 +15,7 @@ const Index = (props: Props) => {
             <div className="text-left flex flex-col gap-5 w-9/12">
               <h1 className="text-5xl">Blartz ⚡</h1>
               <p className="text-lg text-primary">
-                The NFT marketplace you've ever wanted.
+                The NFT marketplace you&apos;ve have ever wanted.
               </p>
               <div>
                 <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
@@ -37,7 +37,7 @@ const Index = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 w-9/12 mx-auto h-fit  md:w-full px-0 md:px-20 pt-10">
+        <div className="flex flex-col gap-4 w-9/12 mx-auto h-fit md:w-full px-0 md:px-20 pt-10">
           <div className="text-3xl text-primary">Slaves</div>
           <div className="tex-md">
             <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
@@ -64,9 +64,7 @@ const Index = (props: Props) => {
                 </div>
                 <div className="flex flex-col text-primary">
                   <div className="text-xl">Aryog</div>
-                  <div className="text-sm">
-                    Co-founder, Backend, Smart Contract{" "}
-                  </div>
+                  <div className="text-sm">Co-founder, Smart Contract </div>
                 </div>
               </div>
               <div className="flex items-center px-3 md:px-5 py-2 gap-2 border border-primary rounded-lg">
