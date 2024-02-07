@@ -17,14 +17,14 @@ const Index = (props: Props) => {
               <p className="text-lg text-primary">
                 The NFT marketplace you&apos;ve have ever wanted.
               </p>
-              <div>
+              {/* <div>
                 <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
                   <div className="text-primary group-hover:text-black  z-50 relative">
-                    Coming soon
+                    Connect Wallet
                   </div>
                   <div className="bg-primary  absolute  w-0 group-hover:w-full left-0 top-0 bottom-0 transition-all ease-in-out duration-500"></div>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className=" mx-auto grid place-items-center">
@@ -46,7 +46,7 @@ const Index = (props: Props) => {
                   <Image
                     className="rounded-full"
                     src={defaultImg}
-                    alt="anku's profile"
+                    alt="slave"
                   ></Image>
                 </div>
                 <div className="flex flex-col text-primary">
@@ -59,7 +59,7 @@ const Index = (props: Props) => {
                   <Image
                     className="rounded-full"
                     src={defaultImg}
-                    alt="anku's profile"
+                    alt="slave"
                   ></Image>
                 </div>
                 <div className="flex flex-col text-primary">
@@ -71,8 +71,8 @@ const Index = (props: Props) => {
                 <div className="w-10 h-10 bg-primary rounded-full flex-shrink-0">
                   <Image
                     className="rounded-full"
-                    src={anku}
-                    alt="anku's profile"
+                    src={defaultImg}
+                    alt="slave"
                   ></Image>
                 </div>
                 <div className="flex flex-col text-primary">
