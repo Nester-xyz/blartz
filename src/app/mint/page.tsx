@@ -28,9 +28,9 @@ const Index = (props: Props) => {
         }}
       >
         <Nav />
-        <div className="grid grid-cols-2 h-screen bg-black text-white">
+        <div className="flex flex-col-reverse md:grid grid-cols-2 h-screen bg-black text-white">
           <div className="grid place-items-center">
-            <div className="w-[35rem]  h-[35rem] relative border-primary m-0 p-0 border-2 rounded-md grid place-content-center text-center text-5xl text-primary gap-2">
+            <div className="w-[30rem]  h-[30rem] relative border-primary m-0 p-0 border-2 rounded-md grid place-content-center text-center text-5xl text-primary gap-2">
               <div
                 className=" w-full h-full absolute top-0 left-0 grid place-items-center "
                 onClick={() => {
@@ -66,6 +66,14 @@ const Index = (props: Props) => {
               {/* <div>+</div>
           <div className="text-4xl">Upload</div> */}
             </div>
+            <div className="block md:hidden">
+              <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
+                <div className="text-primary group-hover:text-black  z-50 relative">
+                  Mint
+                </div>
+                <div className="bg-primary  absolute  w-0 group-hover:w-full left-0 top-0 bottom-0 transition-all ease-in-out duration-500"></div>
+              </button>
+            </div>
           </div>
           <div className="grid place-content-center">
             <div className="flex flex-col gap-10">
@@ -90,7 +98,7 @@ const Index = (props: Props) => {
                   className="bg-black border-primary border-2 rounded py-2 px-5 focus:outline-none "
                 />
               </div>
-              <div>
+              <div className="hidden md:block">
                 <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
                   <div className="text-primary group-hover:text-black  z-50 relative">
                     Mint
