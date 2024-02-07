@@ -2,6 +2,7 @@
 import { PrivyProvider } from "@privy-io/react-auth";
 import Nav from "./Nav";
 import Hero from "./Hero/Hero";
+import { blastSepolia } from "viem/chains";
 
 // This method will be passed to the PrivyProvider as a callback
 // that runs after successful login.
@@ -21,6 +22,8 @@ function MyApp() {
             theme: "light",
             accentColor: "#676FFF",
           },
+          defaultChain: blastSepolia,
+          supportedChains: [blastSepolia],
         }}
       >
         <Nav />
