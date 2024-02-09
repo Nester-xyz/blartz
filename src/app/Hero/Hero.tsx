@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import anku from "../../../public/anku.jpeg";
 import defaultImg from "../../../public/default.jpeg";
 import mainImg from "../../../public/main.webp";
 
