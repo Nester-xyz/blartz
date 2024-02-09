@@ -11,7 +11,7 @@ const Nav = (props: Props) => {
   return (
     <div className="text-white flex justify-between mt-3 mx-3 md:mx-20">
       <div>
-        <h1 className="text-4xl">Blartz ⚡</h1>
+        <h1 className="text-4xl select-none">Blartz ⚡</h1>
       </div>
       <div>
         <button onClick={logout}>Log out</button>
