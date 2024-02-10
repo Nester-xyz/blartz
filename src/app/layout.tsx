@@ -25,6 +25,7 @@ export default function RootLayout({
       <body
         style={{
           fontFamily: "Geom Graphic W03 Regular",
+          backgroundColor: "black",
         }}
       >
         {children}

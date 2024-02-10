@@ -1,7 +1,7 @@
 "use client";
 import { PrivyProvider } from "@privy-io/react-auth";
 import Nav from "../Nav";
-import Mint from "./Mint";
+import Create from "./Create";
 import { blastSepolia } from "viem/chains";
 
 // This method will be passed to the PrivyProvider as a callback
@@ -27,7 +27,7 @@ function MyApp() {
         }}
       >
         <Nav />
-        <Mint />
+        <Create />
       </PrivyProvider>
     </>
   );
