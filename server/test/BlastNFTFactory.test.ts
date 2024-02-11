@@ -183,7 +183,6 @@ describe("BlastNFTFactory", function () {
         .purchaseNFT(newCollectionAddress, tokenId, { value: priceInBlast }))
         .to.be.revertedWith("NFT must be approved to market");
     });
-
     it("should purchase an NFT listed for sale", async function () {
       // approve to marketplace before listing for sale by owner account
       await nftContract.approveMarketplaceNFT(tokenId);
