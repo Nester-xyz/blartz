@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
-// import { blastNFTFactoryContractMethod, marketplaceContractMethod } from "./api/contract";
+import { blastNFTFactoryContract, marketplaceContract } from "./api/contract";
 type Props = {};
 
 const Nav = (props: Props) => {
@@ -29,13 +29,17 @@ const Nav = (props: Props) => {
     localStorage.removeItem("wallet_address");
     setWalletAddress("");
   };
-  // const checkWork = async () => {
-  //   const address = await blastNFTFactoryContractMethod.deployed();
-  //   console.log("The address is", address);
-  // }
+  const checkWork = async () => {
+    try {
+      const address = await blastNFTFactoryContract.methods.deployed().call();
+      console.log("The address is.", address);
+    } catch (error) {
+      console.error("Error calling function:", error);
+    }
+  }
   useEffect(() => {
     getDataFromLocalStorage();
-    // checkWork();
+    checkWork();
   }, []);
 
   return (
