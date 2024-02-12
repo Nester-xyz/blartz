@@ -9,8 +9,14 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 contract BlastNFT is ERC721, Ownable {
     uint256 private _tokenIdCounter;
     // Address of the linked Marketplace contract
+    string private _collectionName;
+    string private _collectionSym;
     address private _marketplace;
     address private _collectionOwner;
+    struct NFTMetadata {
+        string uri;
+        string name;
+    }
     mapping(uint256 => address) private _tokenCollection;
     mapping(uint256 => string) private _tokenURIs;
     mapping(uint256 => string) private _tokenNames;
@@ -36,6 +42,8 @@ contract BlastNFT is ERC721, Ownable {
         address marketplace,
         address owner
     ) Ownable(owner) ERC721(name, symbol) {
+        _collectionName = name;
+        _collectionSym = symbol;
         _collectionOwner = owner;
         _marketplace = marketplace;
         _tokenIdCounter = 0;
@@ -78,11 +86,13 @@ contract BlastNFT is ERC721, Ownable {
         _tokenNames[tokenId] = name;
     }
 
-    function getCollectionNFTs() public view returns (uint256[] memory) {
-        uint256[] memory result = new uint256[](_tokenIdCounter);
+    function getCollectionNFTs() public view returns (NFTMetadata[] memory) {
+        NFTMetadata[] memory result = new NFTMetadata[](_tokenIdCounter);
 
         for (uint256 i = 0; i < _tokenIdCounter; i++) {
-            result[i] = i;
+            string memory uri = _tokenURIs[i];
+            string memory name = _tokenNames[i];
+            result[i] = NFTMetadata(uri, name);
         }
 
         return result;
@@ -124,5 +134,13 @@ contract BlastNFT is ERC721, Ownable {
 
     function deployed() external view returns (address) {
         return address(this);
+    }
+
+    function getCollectionName() external view returns (string memory) {
+        return _collectionName;
+    }
+
+    function getCollectionSym() external view returns (string memory) {
+        return _collectionSym;
     }
 }

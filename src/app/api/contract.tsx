@@ -17,25 +17,25 @@ const web3 = new Web3(window.ethereum)
 // Check if Web3 instance is initialized
 
 // Create contract instances
-if (web3) {
-    console.log(web3)
-    web3.eth.getAccounts()
-        .then(accounts => {
-            const account = accounts[0];
-            console.log('Current account:', account);
-            return web3.eth.getBalance(account);
-        })
-        .then(balance => {
-            console.log('Account balance:', web3.utils.fromWei(balance, 'ether'), 'ETH');
-        })
-        .catch(error => {
-            console.error('Error interacting with accounts or contracts:', error);
-        });
-} else {
-    console.log("web3 not initialized")
-}
+// if (web3) {
+//     console.log(web3)
+//     web3.eth.getAccounts()
+//         .then(accounts => {
+//             const account = accounts[0];
+//             console.log('Current account:', account);
+//             return web3.eth.getBalance(account);
+//         })
+//         .then(balance => {
+//             console.log('Account balance:', web3.utils.fromWei(balance, 'ether'), 'ETH');
+//         })
+//         .catch(error => {
+//             console.error('Error interacting with accounts or contracts:', error);
+//         });
+// } else {
+//     console.log("web3 not initialized")
+// }
 const blastNFTFactoryContract = new web3.eth.Contract(BlastNFTFactoryABI.abi, blastNFTFactoryAddress);
 const marketplaceContract = new web3.eth.Contract(MarketplaceABI.abi, marketplaceAddress);
 
 // Example function to interact with contracts
-export { blastNFTFactoryContract, marketplaceContract };
+export { web3, blastNFTFactoryContract, marketplaceContract };

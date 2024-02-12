@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
-import { blastNFTFactoryContract, marketplaceContract } from "./api/contract";
+import { getCurrentActiveAccount, checkActiveAccount } from "./api/utils/appUtil";
 type Props = {};
 
 const Nav = (props: Props) => {
@@ -18,28 +18,28 @@ const Nav = (props: Props) => {
     setWalletAddress(wallets[0]?.address);
   };
 
-  const getDataFromLocalStorage = () => {
-    const address = localStorage.getItem("wallet_address");
-    if (address) {
-      setWalletAddress(address);
-    }
+  const getDataFromLocalStorage = async () => {
+    if (checkActiveAccount()) return;
+    const acc: any = await getCurrentActiveAccount();
+    if (acc == undefined) return;
+    setWalletAddress(acc[0].address);
   };
 
   const clearDataFromLocalStorage = () => {
     localStorage.removeItem("wallet_address");
     setWalletAddress("");
   };
-  const checkWork = async () => {
-    try {
-      const address = await blastNFTFactoryContract.methods.deployed().call();
-      console.log("The address is.", address);
-    } catch (error) {
-      console.error("Error calling function:", error);
-    }
+  function handleAccountChange(accounts: any) {
+    setWalletAddress(accounts[0]);
+  }
+  if (window.ethereum) {
+    // Listen for account changes
+    window.ethereum.on("accountsChanged", handleAccountChange);
+  } else {
+    console.log("Ethereum provider not found")
   }
   useEffect(() => {
     getDataFromLocalStorage();
-    checkWork();
   }, []);
 
   return (

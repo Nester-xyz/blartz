@@ -6,10 +6,10 @@ import { blastSepolia } from "viem/chains";
 
 // This method will be passed to the PrivyProvider as a callback
 // that runs after successful login.
+
 const handleLogin = (user: any) => {
   console.log(`User ${user.id} logged in!`);
 };
-
 function MyApp() {
   return (
     <>
