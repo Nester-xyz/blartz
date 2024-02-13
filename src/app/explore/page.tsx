@@ -4,7 +4,7 @@ import Explore from "./Explore";
 function MyApp() {
   return (
     <>
-      <Nav />
+      {/* <Nav /> */}
       <Explore />
     </>
   );
