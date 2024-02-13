@@ -1,5 +1,5 @@
 import Nav from "../../Navigation/Nav";
-import Mint from "./pages/[id]";
+import Mint from "./Mint";
 
 function MyApp() {
   return (

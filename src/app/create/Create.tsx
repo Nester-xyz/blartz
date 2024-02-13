@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState, useContext } from "react";
 import { blastNFTFactoryContract } from "../api/contract";
 // import { checkActiveAccount, getCurrentActiveAccount } from "../api/utils/appUtil";
 import { NavigationContext } from "../api/NavigationContext";
+import { useRouter } from "next/navigation";
 type Props = {
 };
 type CollectionData = {
@@ -13,6 +14,7 @@ const page = (props: Props) => {
   const [collectionData, setCollectionData] = useState<CollectionData>({ name: "", symbol: "" })
   const [userCollections, setUserCollections] = useState([])
   const { walletAddress } = useContext(NavigationContext);
+  const router = useRouter();
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCollectionData(prev => ({ ...prev, [name]: value }))
@@ -25,7 +27,9 @@ const page = (props: Props) => {
       console.log(collectionData);
       const response = await blastNFTFactoryContract.methods.createCollection(collectionData.name, collectionData.symbol).send({ from: walletAddress });
       console.log(response)
+      const collectionAddress = response?.logs[0].address;
       console.log("Collection Address", response?.logs[0].address);
+      router.replace(`/mint/${collectionAddress}`);
     } catch (error) {
       console.log("Error creating collection:", error);
     }
