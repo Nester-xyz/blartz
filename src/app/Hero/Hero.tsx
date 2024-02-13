@@ -3,34 +3,28 @@ import Image from "next/image";
 import defaultImg from "../../../public/default.jpeg";
 import mainImg from "../../../public/main.webp";
 import Link from "next/link";
+import CustomButton from "@/Components/UI/CustomButton";
 
 type Props = {};
 
 const Index = (props: Props) => {
   return (
     <div className="">
-      <div className="w-screen h-fit  md:h-screen  bg-black pb-20 grid md:grid-rows-5 text-primary">
-        <div className=" pt-16 md:row-span-4 flex flex-col-reverse gap-8 md:grid md:grid-cols-3  ">
-          <div className="col-span-2 bg-black grid place-items-center">
-            <div className="text-left flex flex-col gap-5 w-9/12">
+      <div className="w-10/12 mx-auto h-fit md:h-screen bg-black pb-20 grid md:grid-rows-5 text-primary">
+        <div className="pt-16 md:row-span-4 flex flex-col-reverse gap-8 md:grid md:grid-cols-3 bg-black">
+          <div className="col-span-2  bg-black grid items-center">
+            <div className="text-left flex flex-col gap-5">
               <h1 className="text-5xl">Blartz ⚡</h1>
               <p className="text-lg text-primary">
                 The NFT marketplace you have ever wanted.
               </p>
               <div>
-                <Link href={"/explore"}>
-                  <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
-                    <div className="text-primary group-hover:text-black  z-50 relative">
-                      Explore
-                    </div>
-                    <div className="bg-primary  absolute  w-0 group-hover:w-full left-0 top-0 bottom-0 transition-all ease-in-out duration-500"></div>
-                  </button>
-                </Link>
+                <CustomButton text="Explore" link="/explore" />
               </div>
             </div>
           </div>
-          <div className=" mx-auto grid place-items-center">
-            <div className="w-80 h-80 md:w-96 md:h-96 border border-primary shadow-2xl rounded-xl grid place-items-center">
+          <div className="grid justify-end items-center">
+            <div className="w-80 h-80 md:w-96 md:h-96 border border-primary shadow-2xl rounded-xl ">
               <Image
                 src={mainImg}
                 className="rounded-xl"
@@ -39,7 +33,7 @@ const Index = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 w-9/12 mx-auto h-fit md:w-full px-0 md:px-20 pt-10">
+        <div className="flex flex-col gap-4 mx-auto h-fit md:w-full px-0  pt-10">
           <div className="text-3xl text-primary">Team</div>
           <div className="tex-md">
             <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
