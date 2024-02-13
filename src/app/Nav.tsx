@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
+import Link from "next/link";
 
 type Props = {};
 
@@ -36,10 +37,9 @@ const Nav = (props: Props) => {
 
   return (
     <div className="text-white flex justify-between mt-3 mx-3 md:mx-20">
-      <div>
+      <Link href={"/"}>
         <h1 className="text-4xl select-none">Blartz ⚡</h1>
-      </div>
-      <div></div>
+      </Link>
       <div className="group relative ">
         <div
           className="border-2 border-primary relative group rounded-md text-primary h-11 overflow-hidden px-4 py-1.5"

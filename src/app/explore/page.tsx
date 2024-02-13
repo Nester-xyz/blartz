@@ -1,6 +1,6 @@
 "use client";
 import Nav from "../Nav";
-import Mint from "./Mint";
+import Explore from "./Explore";
 import { blastSepolia } from "viem/chains";
 import { PrivyProvider } from "@privy-io/react-auth";
 
@@ -27,7 +27,7 @@ function MyApp() {
         }}
       >
         <Nav />
-        <Mint />
+        <Explore />
       </PrivyProvider>
     </>
   );
