@@ -30,9 +30,13 @@ const Nav = (props: Props) => {
     localStorage.removeItem("wallet_address");
     setWalletAddress("");
   };
-
+  // const checkWork = async () => {
+  //   const address = await blastNFTFactoryContractMethod.deployed();
+  //   console.log("The address is", address);
+  // }
   useEffect(() => {
     getDataFromLocalStorage();
+    // checkWork();
   }, []);
 
   return (

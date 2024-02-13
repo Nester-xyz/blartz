@@ -14,7 +14,7 @@ function MyApp() {
   return (
     <>
       <PrivyProvider
-        appId="clsbdu38i06e9mr83ufba7gsn"
+        appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
         onSuccess={handleLogin}
         config={{
           loginMethods: ["email", "wallet"],
