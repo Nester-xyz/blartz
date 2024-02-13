@@ -4,6 +4,7 @@ import Link from "next/link";
 type Props = {
   text: string;
   link?: string;
+  onclick?: () => void;
 };
 
 const CustomButton = ({ text, link }: Props) => {
@@ -19,7 +20,10 @@ const CustomButton = ({ text, link }: Props) => {
           </button>
         </Link>
       ) : (
-        <button className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3">
+        <button
+          onClick={() => (onclick ? onclick : null)}
+          className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3"
+        >
           <div className="text-primary group-hover:text-black  z-50 relative">
             {text}
           </div>
