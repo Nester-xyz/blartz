@@ -20,6 +20,7 @@ const page = (props: Props) => {
   const handleCreateCollection = async () => {
     try {
       if (collectionData.name.length === 0 || collectionData.symbol.length === 0) return;
+      console.log(walletAddress)
       if (walletAddress == null) return;
       console.log(collectionData);
       const response = await blastNFTFactoryContract.methods.createCollection(collectionData.name, collectionData.symbol).send({ from: walletAddress });
@@ -31,13 +32,14 @@ const page = (props: Props) => {
   }
   const handleGetCreatorCollections = async () => {
     try {
+      console.log(walletAddress)
       if (walletAddress == null) return;
       const response: any = await blastNFTFactoryContract.methods.getCreatorCollections().call({ from: walletAddress });
       console.log(response)
       setUserCollections(response);
 
     } catch (error) {
-      console.log("Cannot get collection")
+      console.log("Cannot get collection", error)
     }
   }
   return (

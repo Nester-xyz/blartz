@@ -1,17 +1,20 @@
 "use client";
 import React, { useState, useRef, useEffect, ChangeEvent, useContext } from "react";
 // import MarketplaceABI from '../deployed/Marketplace.json';
-import BlastNFTABI from '../deployed/BlastNFT.json'
-import { web3 } from "../api/contract";
-import { NavigationContext } from "../api/NavigationContext";
+import BlastNFTABI from '../../deployed/BlastNFT.json'
+import { web3 } from "../../api/contract";
+import { useRouter } from "next/router";
+import { NavigationContext } from "../../api/NavigationContext";
 type Props = {};
 type NFTMetadata = {
   tokenId: number;
   tokenURI: string;
   tokenName: string;
 }
-const Index = (props: Props) => {
+const Mint = (props: Props) => {
   let collectionContract: any;
+  // const router = useRouter();
+  // const { id } = router.query;
   const [image, setImage] = useState<File>();
   const [collectionAddress, setCollectionAddress] = useState("")
   const [collectionName, setCollectionName] = useState<String>("")
@@ -24,7 +27,7 @@ const Index = (props: Props) => {
   const getCollectionContract = async () => {
     // Instantiate the newly created collection contract
     try {
-      collectionContract = new web3.eth.Contract(BlastNFTABI.abi, "0xd2f372bfAff0878e5d72ca28fB9FBebcf867F98B");
+      collectionContract = new web3.eth.Contract(BlastNFTABI.abi, "0x84787599bA375980D4Df691489c16B408Bc7D26f");
       console.log(collectionContract)
       const collectionName: String = await collectionContract.methods.getCollectionName().call({ from: walletAddress })
       const collectionSym: String = await collectionContract.methods.getCollectionSym().call({ from: walletAddress })
@@ -73,6 +76,9 @@ const Index = (props: Props) => {
   }
   useEffect(() => {
     getCollectionContract();
+    // if (id) {
+    //   console.log('ID: ', id);
+    // }
   }, [getCollectionContract])
   return (
     <>
@@ -171,4 +177,4 @@ const Index = (props: Props) => {
   );
 };
 
-export default Index;
+export default Mint;
