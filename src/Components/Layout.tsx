@@ -14,23 +14,8 @@ type tabs = {
 
 const tabs: tabs[] = [
   {
-    name: "Home",
-    link: "/",
-    icon: <CiHome />,
-  },
-  {
     name: "Explore",
     link: "/explore",
-    icon: <CiHome />,
-  },
-  {
-    name: "Mint",
-    link: "/mint",
-    icon: <CiHome />,
-  },
-  {
-    name: "Create",
-    link: "/create",
     icon: <CiHome />,
   },
   {
