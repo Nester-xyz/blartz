@@ -1,9 +1,7 @@
-// "use client";
-// import Nav from "../Nav";
-import Nav from "../../Navigation/Nav";
-import Explore from "./Explore";
+"use client";
 import { blastSepolia } from "viem/chains";
 import { PrivyProvider } from "@privy-io/react-auth";
+import Content from "./Content";
 
 // This method will be passed to the PrivyProvider as a callback
 // that runs after successful login.
@@ -14,9 +12,7 @@ const handleLogin = (user: any) => {
 function MyApp() {
   return (
     <>
-      <Nav />
-      <Explore />
-      {/* <PrivyProvider
+      <PrivyProvider
         appId="clsbdu38i06e9mr83ufba7gsn"
         onSuccess={handleLogin}
         config={{
@@ -29,9 +25,8 @@ function MyApp() {
           supportedChains: [blastSepolia],
         }}
       >
-        <Nav />
-        <Explore />
-      </PrivyProvider> */}
+        <Content />
+      </PrivyProvider>
     </>
   );
 }
