@@ -3,21 +3,21 @@ import { artifacts, ethers } from 'hardhat';
 async function main() {
   // Deploy contracts
   const [deployer] = await ethers.getSigners();
-  console.log("Deploying the contracts witht the accound:", await deployer.getAddress())
+  console.log("Deploying the contracts with the account:", await deployer.getAddress())
 
 
   // console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const BlastNFTFactory = await ethers.getContractFactory('BlastNFTFactory');
   const BlastNFTFactoryInstance = await BlastNFTFactory.deploy();
-  // await BlastNFTFactoryInstance.deployed()
+  await BlastNFTFactoryInstance.waitForDeployment()
   console.log("Factory contract address: ", await BlastNFTFactoryInstance.getAddress())
 
   const Marketplace = await ethers.getContractFactory('Marketplace');
   const marketplaceInstance = await Marketplace.deploy(await BlastNFTFactoryInstance.getAddress());
+  await marketplaceInstance.waitForDeployment()
   await BlastNFTFactoryInstance.setMarketplace(await marketplaceInstance.getAddress());
-  // await marketplaceInstance.deployed()
-  console.log("Marketplace contract addres: ", marketplaceInstance)
+  console.log("Marketplace contract addres: ", await marketplaceInstance.getAddress())
   // Save contract address and ABI for frontend integration
   await saveFrontendFiles(BlastNFTFactoryInstance, marketplaceInstance);
 }
@@ -36,6 +36,7 @@ async function saveFrontendFiles(BlastNFTFactoryInstance, marketplaceInstance) {
 
   const FactoryArtifact = artifacts.readArtifactSync("BlastNFTFactory")
   const MarketplaceArtifact = artifacts.readArtifactSync("Marketplace")
+  const BlastNFTArtifact = artifacts.readArtifactSync("BlastNFT")
   fs.writeFileSync(
     contractsDir + "/BlastNFTFactory.json",
     JSON.stringify(FactoryArtifact, null, 2)
@@ -43,6 +44,10 @@ async function saveFrontendFiles(BlastNFTFactoryInstance, marketplaceInstance) {
   fs.writeFileSync(
     contractsDir + "/Marketplace.json",
     JSON.stringify(MarketplaceArtifact, null, 2)
+  )
+  fs.writeFileSync(
+    contractsDir + "/BlastNFT.json",
+    JSON.stringify(BlastNFTArtifact, null, 2)
   )
   console.log("Contracts Deployed")
 }

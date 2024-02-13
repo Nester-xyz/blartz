@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import Link from "next/link";
+import { checkActiveAccount, getCurrentActiveAccount } from "@/app/api/utils/appUtil";
 
+// import { getCurrentActiveAccount, checkActiveAccount } from "./api/utils/appUtil";
 type Props = {};
 
 const Nav = (props: Props) => {
@@ -19,24 +21,28 @@ const Nav = (props: Props) => {
     setWalletAddress(wallets[0]?.address);
   };
 
-  const getDataFromLocalStorage = () => {
-    const address = localStorage.getItem("wallet_address");
-    if (address) {
-      setWalletAddress(address);
-    }
+  const getDataFromLocalStorage = async () => {
+    if (checkActiveAccount()) return;
+    const acc: any = await getCurrentActiveAccount();
+    if (acc == undefined) return;
+    setWalletAddress(acc[0].address);
   };
 
   const clearDataFromLocalStorage = () => {
     localStorage.removeItem("wallet_address");
     setWalletAddress("");
   };
-  // const checkWork = async () => {
-  //   const address = await blastNFTFactoryContractMethod.deployed();
-  //   console.log("The address is", address);
-  // }
+  function handleAccountChange(accounts: any) {
+    setWalletAddress(accounts[0]);
+  }
+  if (typeof window !== 'undefined' && window.ethereum) {
+    // Listen for account changes
+    window.ethereum.on("accountsChanged", handleAccountChange);
+  } else {
+    console.log("Ethereum provider not found")
+  }
   useEffect(() => {
     getDataFromLocalStorage();
-    // checkWork();
   }, []);
 
   return (
