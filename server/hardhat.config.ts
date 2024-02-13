@@ -10,6 +10,10 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:7545",
       chainId: 1337
+    },
+    blastsepolia: {
+      url: "https://sepolia.blast.io",
+      chainId: 168587773
     }
   },
 };
