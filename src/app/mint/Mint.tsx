@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useRef, useEffect, ChangeEvent } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent, useContext } from "react";
 // import MarketplaceABI from '../deployed/Marketplace.json';
 import BlastNFTABI from '../deployed/BlastNFT.json'
 import { web3 } from "../api/contract";
+import { NavigationContext } from "../api/NavigationContext";
 type Props = {};
 type NFTMetadata = {
   tokenId: number;
@@ -19,13 +20,14 @@ const Index = (props: Props) => {
   const [allNftData, setAllNftData] = useState<NFTMetadata[]>()
   const [collectionSym, setCollectionSym] = useState<String>("")
   const inputRef = useRef<HTMLInputElement>(null);
+  const { walletAddress } = useContext(NavigationContext);
   const getCollectionContract = async () => {
     // Instantiate the newly created collection contract
     try {
       collectionContract = new web3.eth.Contract(BlastNFTABI.abi, "0xd2f372bfAff0878e5d72ca28fB9FBebcf867F98B");
       console.log(collectionContract)
-      const collectionName: String = await collectionContract.methods.getCollectionName().call({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" })
-      const collectionSym: String = await collectionContract.methods.getCollectionSym().call({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" })
+      const collectionName: String = await collectionContract.methods.getCollectionName().call({ from: walletAddress })
+      const collectionSym: String = await collectionContract.methods.getCollectionSym().call({ from: walletAddress })
       setCollectionName(collectionName);
       setCollectionSym(collectionSym);
       console.log(collectionName, collectionSym)
@@ -37,11 +39,11 @@ const Index = (props: Props) => {
     try {
       console.log(nftName, nftURI);
       if (nftName.length === 0 || nftURI.length === 0) return;
-      await collectionContract.methods.mintNFT(nftURI, nftName).send({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" })
+      await collectionContract.methods.mintNFT(nftURI, nftName).send({ from: walletAddress })
       // Get the total number of tokens after minting
-      const totalTokens = await collectionContract.methods.getTokenLen().call({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" });
+      const totalTokens = await collectionContract.methods.getTokenLen().call({ from: walletAddress });
       console.log("totalToken", totalTokens) // outputs 3n
-      const uriAndName = await collectionContract.methods.getURIAndName(totalTokens - BigInt(1)).call({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" });
+      const uriAndName = await collectionContract.methods.getURIAndName(totalTokens - BigInt(1)).call({ from: walletAddress });
       console.log("URI of nft is", uriAndName[0]);
       console.log("Name of NFT is: ", uriAndName[1])
     } catch (error) {
@@ -54,7 +56,7 @@ const Index = (props: Props) => {
   }
   const handleGetCollectionNFTs = async () => {
     try {
-      const response = await collectionContract.methods.getCollectionNFTs().call({ from: "0xEd5466474578E2F5c2cA9f088908102C17E10FDE" })
+      const response = await collectionContract.methods.getCollectionNFTs().call({ from: walletAddress })
       const response1: NFTMetadata[] = response.map((item: any, index: any) => {
         return {
           tokenId: index,

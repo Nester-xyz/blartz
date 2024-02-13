@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import Link from "next/link";
 import { checkActiveAccount, getCurrentActiveAccount } from "@/app/api/utils/appUtil";
-
+import { NavigationContext } from "@/app/api/NavigationContext";
 // import { getCurrentActiveAccount, checkActiveAccount } from "./api/utils/appUtil";
 type Props = {};
 
@@ -12,7 +12,8 @@ const Nav = (props: Props) => {
   const { wallets } = useWallets();
   const { logout } = usePrivy();
   const [isLoggedOut, setisLoggedOut] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const { walletAddress, setWalletAddress } = useContext(NavigationContext);
+  // const [walletAddress, setWalletAddress] = useState("");
 
   const storeToLocalStorage = async () => {
     await connectWallet();

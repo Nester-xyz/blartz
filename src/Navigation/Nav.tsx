@@ -2,7 +2,6 @@
 import { blastSepolia } from "viem/chains";
 import { PrivyProvider } from "@privy-io/react-auth";
 import Content from "./Content";
-
 // This method will be passed to the PrivyProvider as a callback
 // that runs after successful login.
 const handleLogin = (user: any) => {
