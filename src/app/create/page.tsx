@@ -5,7 +5,7 @@ function MyApp() {
   return (
     <>
       <Layout>
-        <Nav />
+        {/* <Nav /> */}
         <Create />
       </Layout>
     </>
