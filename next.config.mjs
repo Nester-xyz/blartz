@@ -8,7 +8,14 @@ const nextConfig = {
                 port: '',
                 pathname: '/ipfs/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'via.placeholder.com',
+                port: '',
+                pathname: '/*',
+            },
         ],
+        
     }
 };
 
