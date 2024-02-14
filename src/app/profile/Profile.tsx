@@ -1,12 +1,14 @@
 "use client";
 import Layout from "@/Components/Layout";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NavigationContext } from "../api/NavigationContext";
 import Created from "./Created";
 import Collected from "./Collected";
 
 type Props = {};
 
 const Profile = (props: Props) => {
+  const { walletAddress } = useContext(NavigationContext);
   const [tab, setTab] = useState<"Created" | "Collected">("Created");
   const [activePage, setActivePage] = useState<JSX.Element>();
 
@@ -27,8 +29,9 @@ const Profile = (props: Props) => {
             {/* profile */}
             <div className=" w-24 bg-yellow-100 aspect-square rounded-full shadow-lg"></div>
             <div className="flex flex-col">
-              <div>Account Name</div>
-              <div>Address:</div>
+              <div>
+                {walletAddress?.slice(0, 5) + "..." + walletAddress?.slice(-5)}
+              </div>
               <div>Onchain since:</div>
             </div>
           </div>

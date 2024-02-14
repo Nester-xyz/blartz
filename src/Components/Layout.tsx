@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import Nav from "@/Navigation/Nav";
 import CustomButton from "./UI/CustomButton";
+import { Toaster } from "react-hot-toast";
 type Props = {
   children: ReactNode;
 };
@@ -53,6 +54,7 @@ const Layout = ({ children }: Props) => {
           <div className="col-span-2  h-full"></div>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={true} />
     </div>
   );
 };
