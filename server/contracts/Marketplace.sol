@@ -10,12 +10,16 @@ import "./BlastNFTFactory.sol";
 contract Marketplace is ReentrancyGuard {
     address public owner;
     BlastNFTFactory public factory;
+    uint256 constant MAX_TOKEN_ID = 10000;
     // Map of the collection address to tokenId (Token prices)
     mapping(address => mapping(uint256 => uint256)) private _tokenPrices;
     // Map of the collection address to tokenId is listed
     mapping(address => mapping(uint256 => bool)) private _isNFTListed;
     uint256 private _tokenIdCounter;
-
+    struct TokenInfo {
+        address collection;
+        uint256[] tokenIds;
+    }
     event NFTListed(
         address indexed collection,
         uint256 indexed tokenId,
@@ -137,5 +141,12 @@ contract Marketplace is ReentrancyGuard {
         uint256 tokenId
     ) external view returns (bool) {
         return _isNFTListed[collection][tokenId];
+    }
+
+    function getTokenPrice(
+        address collection,
+        uint256 tokenId
+    ) external view returns (uint256) {
+        return _tokenPrices[collection][tokenId];
     }
 }

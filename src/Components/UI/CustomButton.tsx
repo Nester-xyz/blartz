@@ -7,7 +7,7 @@ type Props = {
   onclick?: () => void;
 };
 
-const CustomButton = ({ text, link }: Props) => {
+const CustomButton = ({ text, link, onclick }: Props) => {
   return (
     <div>
       {link ? (
@@ -21,7 +21,7 @@ const CustomButton = ({ text, link }: Props) => {
         </Link>
       ) : (
         <button
-          onClick={() => (onclick ? onclick : null)}
+          onClick={onclick ? onclick : () => { }}
           className="border-2 border-primary relative group rounded-md text-primary overflow-hidden px-8 py-3"
         >
           <div className="text-primary group-hover:text-black  z-50 relative">
