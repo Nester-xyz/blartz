@@ -4,6 +4,7 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import Content from "./Content";
 // This method will be passed to the PrivyProvider as a callback
 // that runs after successful login.
+require('dotenv').config();
 const handleLogin = (user: any) => {
   console.log(`User ${user.id} logged in!`);
 };
@@ -12,7 +13,7 @@ function MyApp() {
   return (
     <>
       <PrivyProvider
-        appId="clsbdu38i06e9mr83ufba7gsn"
+        appId={`${process.env.NEXT_PUBLIC_PRIVY_APP_ID}`}
         onSuccess={handleLogin}
         config={{
           loginMethods: ["email", "wallet"],

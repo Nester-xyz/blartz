@@ -2,11 +2,12 @@
 import React, { useState, useRef, useEffect, ChangeEvent, useContext } from "react";
 // import MarketplaceABI from '../deployed/Marketplace.json';
 import BlastNFTABI from '../../deployed/BlastNFT.json'
-import { web3 } from "../../api/contract";
+import { web3 } from "../../api/ContractAPI";
 // import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import { NavigationContext } from "../../api/NavigationContext";
 import Nav from "../../../Navigation/Nav";
+import pinFileToIPFS from "@/app/api/PinataIPFSapi";
 type Props = {};
 type NFTMetadata = {
   tokenId: number;
@@ -20,7 +21,7 @@ const Mint = (props: Props) => {
   const [collectionAddress, setCollectionAddress] = useState("")
   const [collectionName, setCollectionName] = useState<String>("")
   const [nftName, setNftName] = useState("")
-  const [nftURI, setNftURI] = useState("https://dummy.uri")
+  const [nftURI, setNftURI] = useState("")
   const [allNftData, setAllNftData] = useState<NFTMetadata[]>()
   const [collectionSym, setCollectionSym] = useState<String>("")
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +44,7 @@ const Mint = (props: Props) => {
   const handleMintNFT = async () => {
     try {
       console.log(nftName, nftURI);
-      if (nftName.length === 0 || nftURI.length === 0) return;
+      if (nftName.length === 0 || nftURI.length === 0) return "Name and URI are required";
       await collectionContract.methods.mintNFT(nftURI, nftName).send({ from: walletAddress })
       // Get the total number of tokens after minting
       const totalTokens = await collectionContract.methods.getTokenLen().call({ from: walletAddress });
@@ -115,8 +116,15 @@ const Mint = (props: Props) => {
                   accept="image/*"
                   className="w-full  border border-gray-400 p-2 rounded-lg"
                   ref={inputRef}
-                  onChange={(e) => {
-                    setImage(e.target.files![0]);
+                  onChange={async (e) => {
+                    const image = e.target.files![0];
+                    setImage(image);
+                    // TODO: Upload to IPFS
+                    if (e.target.files![0]) {
+                      const { IpfsHash } = await pinFileToIPFS(image)
+                      setNftURI(IpfsHash);
+                      console.log("https://red-mad-woodpecker-146.mypinata.cloud/ipfs/" + IpfsHash)
+                    }
                   }}
                 />
               </div>

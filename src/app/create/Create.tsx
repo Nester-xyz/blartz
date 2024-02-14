@@ -1,6 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState, useContext } from "react";
-import { blastNFTFactoryContract } from "../api/contract";
+import { blastNFTFactoryContract } from "../api/ContractAPI";
 // import { checkActiveAccount, getCurrentActiveAccount } from "../api/utils/appUtil";
 import { NavigationContext } from "../api/NavigationContext";
 import { useRouter } from "next/navigation";

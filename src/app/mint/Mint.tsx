@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, ChangeEvent, useContext } from "react";
 // import MarketplaceABI from '../deployed/Marketplace.json';
 import BlastNFTABI from '../deployed/BlastNFT.json'
-import { web3 } from "../api/contract";
+import { web3 } from "../api/ContractAPI";
 // import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import { NavigationContext } from "../api/NavigationContext";
