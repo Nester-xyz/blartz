@@ -62,7 +62,7 @@ const page = (props: Props) => {
           <div className="flex flex-col gap-10">
             <div className="text-4xl text-center">Create Collection</div>
             <div className="flex flex-col gap-2">
-              <div className="text-2xl">Your Contract Name</div>
+              <div className="text-2xl">Your Collection Name</div>
               <input
                 spellCheck="false"
                 type="text"
