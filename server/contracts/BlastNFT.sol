@@ -14,10 +14,11 @@ contract BlastNFT is ERC721, Ownable {
     address private _marketplace;
     address private _collectionOwner;
     struct NFTMetadata {
+        uint256 tokenIds;
         string uri;
         string name;
     }
-    mapping(uint256 => address) private _tokenCollection;
+    mapping(address => uint256[]) private _tokenCollection;
     mapping(uint256 => string) private _tokenURIs;
     mapping(uint256 => string) private _tokenNames;
     event NFTMinted(
@@ -58,7 +59,7 @@ contract BlastNFT is ERC721, Ownable {
 
         uint256 tokenId = _tokenIdCounter;
         // Set the collection ownership for the minted token may require in the future
-        _tokenCollection[tokenId] = msg.sender;
+        _tokenCollection[msg.sender].push(tokenId);
         _tokenIdCounter++;
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, tokenURI);
@@ -90,9 +91,10 @@ contract BlastNFT is ERC721, Ownable {
         NFTMetadata[] memory result = new NFTMetadata[](_tokenIdCounter);
 
         for (uint256 i = 0; i < _tokenIdCounter; i++) {
+            uint256 tokenIds = i;
             string memory uri = _tokenURIs[i];
             string memory name = _tokenNames[i];
-            result[i] = NFTMetadata(uri, name);
+            result[i] = NFTMetadata(tokenIds, uri, name);
         }
 
         return result;
@@ -142,5 +144,24 @@ contract BlastNFT is ERC721, Ownable {
 
     function getCollectionSym() external view returns (string memory) {
         return _collectionSym;
+    }
+
+    // Get the user specific token
+    function getUserToken() public view returns (NFTMetadata[] memory) {
+        uint256[] memory tokenIds = _tokenCollection[msg.sender];
+        NFTMetadata[] memory result = new NFTMetadata[](tokenIds.length);
+        // string[] memory uris = new string[](tokenIds.length);
+        // string[] memory names = new string[](tokenIds.length);
+        // for (uint256 i = 0; i < tokenIds.length; i++) {
+        //     uris[i] = _tokenURIs[tokenIds[i]];
+        //     names[i] = _tokenNames[tokenIds[i]];
+        // }
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            uint256 tokenId = tokenIds[i];
+            string memory uri = _tokenURIs[tokenId];
+            string memory name = _tokenNames[tokenId];
+            result[i] = NFTMetadata(tokenId, uri, name);
+        }
+        return result;
     }
 }

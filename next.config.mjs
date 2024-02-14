@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-images: {
-    domains: ['images.unsplash.com'],
-}
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'red-mad-woodpecker-146.mypinata.cloud',
+                port: '',
+                pathname: '/ipfs/**',
+            },
+        ],
+    }
 };
 
 export default nextConfig;

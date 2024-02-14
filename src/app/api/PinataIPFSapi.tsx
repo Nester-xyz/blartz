@@ -17,7 +17,6 @@ const pinFileToIPFS = async (file: File) => {
         cidVersion: 0,
     })
     formData.append('pinataOptions', pinataOptions);
-    console.log(process.env.NEXT_PUBLIC_PINATA_IPFS_JWT)
     try {
         const formDataAny: any = formData;
         const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {

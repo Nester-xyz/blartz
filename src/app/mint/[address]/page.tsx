@@ -10,7 +10,7 @@ import Nav from "../../../Navigation/Nav";
 import pinFileToIPFS from "@/app/api/PinataIPFSapi";
 type Props = {};
 type NFTMetadata = {
-  tokenId: number;
+  tokenId: string;
   tokenURI: string;
   tokenName: string;
 }
@@ -65,9 +65,9 @@ const Mint = (props: Props) => {
       const response = await collectionContract.methods.getCollectionNFTs().call({ from: walletAddress })
       const response1: NFTMetadata[] = response.map((item: any, index: any) => {
         return {
-          tokenId: index,
-          tokenURI: item[0],
-          tokenName: item[1]
+          tokenId: String(item[0]),
+          tokenURI: item[1],
+          tokenName: item[2]
         }
       })
       console.log(JSON.stringify(response1));
