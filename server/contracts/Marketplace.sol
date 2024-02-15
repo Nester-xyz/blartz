@@ -15,10 +15,15 @@ contract Marketplace is ReentrancyGuard {
     mapping(address => mapping(uint256 => uint256)) private _tokenPrices;
     // Map of the collection address to tokenId is listed
     mapping(address => mapping(uint256 => bool)) private _isNFTListed;
+    // Map of the collection to tokenIds
+    mapping(address => uint256[]) private _activeCollectionToTokenIds;
+    address[] private _activeCollectionsList;
+
     uint256 private _tokenIdCounter;
     struct TokenInfo {
         address collection;
-        uint256[] tokenIds;
+        uint256 tokenId;
+        uint256 price;
     }
     event NFTListed(
         address indexed collection,
@@ -110,11 +115,34 @@ contract Marketplace is ReentrancyGuard {
             _isNFTListed[collection][tokenId],
             "NFT is not listed for sale"
         );
-
+        // Remove the tokenId from the active collection mapping
+        uint256[] storage tokenIds = _activeCollectionToTokenIds[collection];
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            // Swap with the last element and pop
+            if (tokenIds[i] == tokenId) {
+                tokenIds[i] = tokenIds[tokenIds.length - 1];
+                tokenIds.pop();
+                break;
+            }
+        }
+        // If no more tokens listed for sale, remove collection from active collections list
+        if (tokenIds.length == 0) {
+            for (uint256 i = 0; i < _activeCollectionsList.length; i++) {
+                if (_activeCollectionsList[i] == collection) {
+                    // Swap with the last element and pop
+                    _activeCollectionsList[i] = _activeCollectionsList[
+                        _activeCollectionsList.length - 1
+                    ];
+                    _activeCollectionsList.pop();
+                    break;
+                }
+            }
+        }
         // Remove the NFT from sale
         _isNFTListed[collection][tokenId] = false;
+        // Remove from _activeCollectionToTokenIds and _activeCollectionsList;
 
-        // Optionally, you can also reset the price
+        // Reset the price
         _tokenPrices[collection][tokenId] = 0;
     }
 
@@ -131,7 +159,9 @@ contract Marketplace is ReentrancyGuard {
         _isNFTListed[collection][tokenId] = true;
         // Set the price in the _tokenPrices mapping
         _tokenPrices[collection][tokenId] = priceInBlast;
-
+        // Add to _activeCollectionToTokenIds and _activeCollectionsList;
+        _activeCollectionsList.push(collection);
+        _activeCollectionToTokenIds[collection].push(tokenId);
         // Emit an event to indicate that the NFT is listed for sale
         emit NFTListed(collection, tokenId, msg.sender, priceInBlast);
     }
@@ -148,5 +178,38 @@ contract Marketplace is ReentrancyGuard {
         uint256 tokenId
     ) external view returns (uint256) {
         return _tokenPrices[collection][tokenId];
+    }
+
+    function getAllActiveTokens() external view returns (TokenInfo[] memory) {
+        TokenInfo[] memory allTokens = new TokenInfo[](getTotalActiveTokens());
+        uint256 index = 0;
+
+        // Iterate over active collections
+        for (uint256 i = 0; i < _activeCollectionsList.length; i++) {
+            address collection = _activeCollectionsList[i];
+            uint256[] memory tokenIds = _activeCollectionToTokenIds[collection];
+
+            // Iterate over token IDs in the current collection
+            for (uint256 j = 0; j < tokenIds.length; j++) {
+                uint256 tokenId = tokenIds[j];
+                uint256 price = _tokenPrices[collection][tokenId];
+                allTokens[index] = TokenInfo(collection, tokenId, price);
+                index++;
+            }
+        }
+
+        return allTokens;
+    }
+
+    function getTotalActiveTokens() internal view returns (uint256) {
+        uint256 totalActiveTokens = 0;
+
+        // Iterate over active collections
+        for (uint256 i = 0; i < _activeCollectionsList.length; i++) {
+            address collection = _activeCollectionsList[i];
+            totalActiveTokens += _activeCollectionToTokenIds[collection].length;
+        }
+
+        return totalActiveTokens;
     }
 }
