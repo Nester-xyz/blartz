@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import { usePathname } from "next/navigation";
 import CustomButton from "@/Components/UI/CustomButton";
 import Layout from "@/Components/Layout";
@@ -20,6 +20,7 @@ const page = (props: Props) => {
   const [title, setTitle] = useState<string>("");
   const [ownerOfNft, setOwnerOfNft] = useState("");
   const [isAlreadyListed, setIsAlreadyListed] = useState(false);
+  const [price, setPrice] = useState(0);
   let collectionContract: any;
   const getTokenDetails = async () => {
     try {
@@ -61,7 +62,7 @@ const page = (props: Props) => {
         await collectionContract.methods.approveMarketplaceNFT(BigInt(tokenId)).send({ from: walletAddress })
       }
       // Step 2: Call toggleNFTForSale function
-      const response = await marketplaceContract.methods.toggleNFTForSale(collectionAddress, BigInt(tokenId), '1000000000000000000').send({ from: walletAddress });
+      const response = await marketplaceContract.methods.toggleNFTForSale(collectionAddress, BigInt(tokenId), String(Number(price) * 1e18)).send({ from: walletAddress });
 
       console.log(response); // Log the transaction receipt
 
@@ -76,6 +77,9 @@ const page = (props: Props) => {
       console.log(error)
     }
   }
+  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPrice(parseFloat(e.target.value));
+  }
   useEffect(() => {
     if (router) {
       console.log("Collection Address: ", router.split("/")[2]);
@@ -84,7 +88,7 @@ const page = (props: Props) => {
     }
     getTokenDetails();
     getIfAlreadyOwner(router.split("/")[3]);
-  }, [walletAddress, tokenId, title, collectionContract, isAlreadyListed]);
+  }, [walletAddress, tokenId, title, collectionContract, isAlreadyListed, price]);
 
   return (
     <Layout>
@@ -103,6 +107,18 @@ const page = (props: Props) => {
         </div>
         <div className=" col-span-4 flex flex-col gap-10">
           <div className="text-5xl">{title}</div>
+          {(!isAlreadyListed && walletAddress?.toLowerCase() === ownerOfNft.toLowerCase()) && <div className="flex flex-col gap-2">
+            <div className="text-2xl">Price</div>
+            <input
+              spellCheck="false"
+              type="number"
+              name="price"
+              id=""
+              value={price}
+              onChange={handlePriceChange}
+              className="bg-transparent border-primary border-2 rounded py-2 px-5 focus:outline-none "
+            />
+          </div>}
           {walletAddress?.toLowerCase() === ownerOfNft.toLowerCase() ? (isAlreadyListed ? <CustomButton text="Remove From Sale" onclick={() => handleToggleForSale()} /> : <CustomButton text="List For Sale" onclick={() => handleToggleForSale()} />) : <CustomButton text="Buy With Yield" />}
         </div>
       </div>
