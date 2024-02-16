@@ -84,4 +84,8 @@ contract WalletContract {
         }
         emit BuyerGetsBackLocked(_buyer, amountPaid);
     }
+
+    function getContractAmount() external view returns (uint256) {
+        return address(this).balance;
+    }
 }

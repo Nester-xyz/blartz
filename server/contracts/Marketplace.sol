@@ -22,6 +22,9 @@ contract Marketplace is ReentrancyGuard {
     mapping(address => mapping(uint256 => address))
         private _walletContractMapping;
     address[] private _activeCollectionsList;
+    // Maps for getting the User Collected NFTs
+    mapping(address => address[]) _userToCollectionMap;
+    mapping(address => mapping(address => uint256[])) _userToCollectionToTokenIdsMap;
 
     uint256 private _tokenIdCounter;
     struct TokenInfo {
@@ -150,7 +153,25 @@ contract Marketplace is ReentrancyGuard {
         // Remove from sale
         _removeFromSale(collection, tokenId);
 
+        // Updating the user variables
+        if (!_isCollectionAlreadyAdded(msg.sender, collection)) {
+            _userToCollectionMap[msg.sender].push(collection);
+        }
+        _userToCollectionToTokenIdsMap[msg.sender][collection].push(tokenId);
         emit NFTPurchased(collection, tokenId, msg.sender);
+    }
+
+    function _isCollectionAlreadyAdded(
+        address user,
+        address collection
+    ) internal view returns (bool) {
+        address[] storage collections = _userToCollectionMap[user];
+        for (uint256 i = 0; i < collections.length; i++) {
+            if (collections[i] == collection) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function calculatePrincipalAmount(
@@ -270,5 +291,55 @@ contract Marketplace is ReentrancyGuard {
         }
 
         return totalActiveTokens;
+    }
+
+    function getWalletContract(
+        address collection,
+        uint256 tokenId
+    ) external view returns (address) {
+        return _walletContractMapping[collection][tokenId];
+    }
+
+    // To get the user collected NFTs
+    function getUserCollectedNFT() external view returns (TokenInfo[] memory) {
+        address[] memory userCollections = _userToCollectionMap[msg.sender];
+        TokenInfo[] memory userNFTs = new TokenInfo[](MAX_TOKEN_ID); // Assuming maximum token ID is known
+
+        uint256 index = 0;
+
+        // Iterate over collections owned by the user
+        for (uint256 i = 0; i < userCollections.length; i++) {
+            address collection = userCollections[i];
+            uint256[] memory tokenIds = getOwnedTokenIds(
+                msg.sender,
+                collection
+            );
+
+            // Iterate over token IDs in the current collection
+            for (uint256 j = 0; j < tokenIds.length; j++) {
+                uint256 tokenId = tokenIds[j];
+                uint256 price = _tokenPrices[collection][tokenId];
+                // Should be owner to add to userNFTs list Yet to implement
+                userNFTs[index] = TokenInfo(collection, tokenId, price);
+                index++;
+            }
+        }
+
+        // Resize the array to remove any empty slots
+        assembly {
+            mstore(userNFTs, index)
+        }
+
+        return userNFTs;
+    }
+
+    function getOwnedTokenIds(
+        address user,
+        address collection
+    ) internal view returns (uint256[] memory) {
+        uint256[] storage tokenIds = _userToCollectionToTokenIdsMap[user][
+            collection
+        ];
+        return tokenIds;
     }
 }

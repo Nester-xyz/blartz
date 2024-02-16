@@ -40,9 +40,11 @@ const page = (props: Props) => {
   }
   const handleBuyWithYield = async () => {
     try {
-
+      const tokenPrice = await marketplaceContract.methods.getTokenPrice(collectionAddress, BigInt(tokenId)).call({ from: walletAddress })
+      const response = await marketplaceContract.methods.purchaseNFTWithYeild(collectionAddress, BigInt(tokenId)).send({ from: walletAddress, value: tokenPrice });
+      console.log(response);
     } catch (error) {
-
+      console.log(error);
     }
   }
   const getIfAlreadyOwner = async (tokenId: string) => {
@@ -88,7 +90,7 @@ const page = (props: Props) => {
     }
     getTokenDetails();
     getIfAlreadyOwner(router.split("/")[3]);
-  }, [walletAddress, tokenId, title, collectionContract, isAlreadyListed, price]);
+  }, [walletAddress, tokenId, title, collectionContract, isAlreadyListed, price, handleBuyWithYield]);
 
   return (
     <Layout>
@@ -119,7 +121,9 @@ const page = (props: Props) => {
               className="bg-transparent border-primary border-2 rounded py-2 px-5 focus:outline-none "
             />
           </div>}
-          {walletAddress?.toLowerCase() === ownerOfNft.toLowerCase() ? (isAlreadyListed ? <CustomButton text="Remove From Sale" onclick={() => handleToggleForSale()} /> : <CustomButton text="List For Sale" onclick={() => handleToggleForSale()} />) : <CustomButton text="Buy With Yield" />}
+          {walletAddress?.toLowerCase() === ownerOfNft.toLowerCase()
+            ? (isAlreadyListed ? <CustomButton text="Remove From Sale" onclick={() => handleToggleForSale()} /> : <CustomButton text="List For Sale" onclick={() => handleToggleForSale()} />)
+            : (isAlreadyListed ? <CustomButton text="Buy With Yield" onclick={handleBuyWithYield} /> : <CustomButton text="Not For Sale" />)}
         </div>
       </div>
     </Layout>

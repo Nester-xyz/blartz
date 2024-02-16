@@ -37,6 +37,7 @@ async function saveFrontendFiles(BlastNFTFactoryInstance, marketplaceInstance) {
   const FactoryArtifact = artifacts.readArtifactSync("BlastNFTFactory")
   const MarketplaceArtifact = artifacts.readArtifactSync("Marketplace")
   const BlastNFTArtifact = artifacts.readArtifactSync("BlastNFT")
+  const WalletContractArtifact = artifacts.readArtifactSync("WalletContract")
   fs.writeFileSync(
     contractsDir + "/BlastNFTFactory.json",
     JSON.stringify(FactoryArtifact, null, 2)
@@ -47,6 +48,10 @@ async function saveFrontendFiles(BlastNFTFactoryInstance, marketplaceInstance) {
   )
   fs.writeFileSync(
     contractsDir + "/BlastNFT.json",
+    JSON.stringify(BlastNFTArtifact, null, 2)
+  )
+  fs.writeFileSync(
+    contractsDir + "/WalletContract.json",
     JSON.stringify(BlastNFTArtifact, null, 2)
   )
   console.log("Contracts Deployed")
