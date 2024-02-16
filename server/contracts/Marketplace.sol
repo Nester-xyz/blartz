@@ -160,12 +160,8 @@ contract Marketplace is ReentrancyGuard {
             _userToCollectionMap[msg.sender].push(collection);
         }
         _userToCollectionToTokenIdsMap[msg.sender][collection].push(tokenId);
-        _buyerToWalletAddress[msg.sender].push(
-            _walletContractMapping[collection][tokenId]
-        );
-        _sellerToWalletAddress[seller].push(
-            _walletContractMapping[collection][tokenId]
-        );
+        _buyerToWalletAddress[msg.sender].push(address(walletContract));
+        _sellerToWalletAddress[seller].push(address(walletContract));
         emit NFTPurchased(collection, tokenId, msg.sender);
     }
 
