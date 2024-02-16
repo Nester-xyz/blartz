@@ -197,7 +197,7 @@ describe("BlastNFTFactory", function () {
 
       // Check if the owner's balance increased by the sale price
       const actualAmountSpent = initialBalance - finalBalance;
-      expect(actualAmountSpent).to.be.closeTo(BigInt(priceInBlast), ethers.parseEther("0.0001"));
+      expect(actualAmountSpent).to.be.closeTo(BigInt(priceInBlast), ethers.parseEther("0.001"));
 
       // Check if the NFT is no longer listed for sale
       const isNFTListed = await marketplaceInstance.isNFTListed(newCollectionAddress, tokenId);

@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./BlastNFT.sol";
 import "./BlastNFTFactory.sol";
+import "./WalletContract.sol";
 
 // For factory pass it on the constructor
 contract Marketplace is ReentrancyGuard {
@@ -17,6 +18,9 @@ contract Marketplace is ReentrancyGuard {
     mapping(address => mapping(uint256 => bool)) private _isNFTListed;
     // Map of the collection to tokenIds
     mapping(address => uint256[]) private _activeCollectionToTokenIds;
+    // Map of the collection to tokenIds to WalletContractAddress
+    mapping(address => mapping(uint256 => address))
+        private _walletContractMapping;
     address[] private _activeCollectionsList;
 
     uint256 private _tokenIdCounter;
@@ -103,6 +107,52 @@ contract Marketplace is ReentrancyGuard {
         emit NFTPurchased(collection, tokenId, msg.sender);
     }
 
+    // User should have the collection address of particular nft
+    function purchaseNFTWithYeild(
+        address collection,
+        uint256 tokenId
+    ) external payable nonReentrant {
+        // Check if the NFT is listed for sale and the price is greater than 0
+        require(
+            _tokenPrices[collection][tokenId] > 0,
+            "NFT not listed for sale"
+        );
+        uint256 priceInBlast = _tokenPrices[collection][tokenId];
+
+        // Ensure the buyer sends enough funds to purchase the NFT
+        require(msg.value >= priceInBlast, "Insufficient funds to purchase");
+
+        // Transfer funds to the seller
+        address payable seller = payable(BlastNFT(collection).ownerOf(tokenId));
+        // Ensure that the buyer is not the current owner of the token
+        require(
+            seller != msg.sender,
+            "Buyer is the current owner of the token"
+        );
+
+        // Check if the buyer is approved or the owner
+        require(
+            BlastNFT(collection).getApproved(tokenId) == address(this),
+            "NFT must be approved to market"
+        );
+
+        // Transfer funds to the WalletContract
+        WalletContract walletContract = WalletContract(
+            _walletContractMapping[collection][tokenId]
+        );
+        walletContract.setBuyer(payable(msg.sender));
+        walletContract.depositAmountByMarketplace{value: priceInBlast}(
+            _tokenPrices[collection][tokenId]
+        );
+
+        // Transfer the NFT to the buyer
+        BlastNFT(collection).transferFrom(seller, msg.sender, tokenId);
+        // Remove from sale
+        _removeFromSale(collection, tokenId);
+
+        emit NFTPurchased(collection, tokenId, msg.sender);
+    }
+
     function calculatePrincipalAmount(
         uint256 targetYield,
         uint256 lockupPeriodInDays
@@ -140,10 +190,10 @@ contract Marketplace is ReentrancyGuard {
         }
         // Remove the NFT from sale
         _isNFTListed[collection][tokenId] = false;
-        // Remove from _activeCollectionToTokenIds and _activeCollectionsList;
-
         // Reset the price
         _tokenPrices[collection][tokenId] = 0;
+        // Reset the wallet Address
+        _walletContractMapping[collection][tokenId] = address(0);
     }
 
     function _listForSale(
@@ -162,6 +212,15 @@ contract Marketplace is ReentrancyGuard {
         // Add to _activeCollectionToTokenIds and _activeCollectionsList;
         _activeCollectionsList.push(collection);
         _activeCollectionToTokenIds[collection].push(tokenId);
+        // Add the collection to tokenId to walletAddress mapping
+        WalletContract walletContract = new WalletContract(
+            address(this),
+            priceInBlast
+        );
+        walletContract.setSeller(
+            payable(BlastNFT(collection).ownerOf(tokenId))
+        );
+        _walletContractMapping[collection][tokenId] = address(walletContract);
         // Emit an event to indicate that the NFT is listed for sale
         emit NFTListed(collection, tokenId, msg.sender, priceInBlast);
     }
