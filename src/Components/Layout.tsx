@@ -18,9 +18,14 @@ const tabs: tabs[] = [
     link: "/explore",
   },
   {
+    name: "Wallet",
+    link: "/wallet"
+  },
+  {
     name: "Profile",
     link: "/profile",
   },
+
 ];
 
 const Layout = ({ children }: Props) => {

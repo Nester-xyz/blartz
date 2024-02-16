@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-// import "./IBlast.sol";
+import "./IBlast.sol";
 
 contract WalletContract {
     uint256 private _priceOfNFT;
@@ -33,8 +33,8 @@ contract WalletContract {
 
     // listForSale() in marketplace will deploy this contract.
     constructor(address marketplace, uint256 priceOfNFT) {
-        // IBlast(0x4300000000000000000000000000000000000002)
-        //     .configureAutomaticYield();
+        IBlast(0x4300000000000000000000000000000000000002)
+            .configureAutomaticYield();
         _marketPlace = marketplace;
         _priceOfNFT = priceOfNFT;
     }
@@ -108,5 +108,9 @@ contract WalletContract {
             emit ContractDestroyed();
             selfdestruct(payable(_marketPlace));
         }
+    }
+
+    function getYeildGeneratedAmount() external view returns (uint256) {
+        return (_depositedAmount - address(this).balance);
     }
 }
