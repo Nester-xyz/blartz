@@ -18,6 +18,10 @@ const tabs: tabs[] = [
     link: "/explore",
   },
   {
+    name: "Wallet",
+    link: "/wallet",
+  },
+  {
     name: "Profile",
     link: "/profile",
   },

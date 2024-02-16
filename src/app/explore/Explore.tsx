@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Layout from "../../Components/Layout";
 import React, { useContext, useEffect, useState } from "react";
 import { marketplaceContract } from "../api/ContractAPI";
@@ -11,36 +11,42 @@ type ActiveNFTDataType = {
   collection: string;
   tokenPrice: string;
   tokenId: string; // In ETH
-}
+};
 
 const Explore = (props: Props) => {
   const { walletAddress } = useContext(NavigationContext);
   const [forSaleNFTData, setForSaleNFTData] = useState<ActiveNFTDataType[]>([]);
-  const [processedTokens, setProcessedTokens] = useState<Set<string>>(new Set());
+  const [processedTokens, setProcessedTokens] = useState<Set<string>>(
+    new Set()
+  );
 
   const getAllMarketPlaceListedNFTs = async () => {
     try {
-      const response = await marketplaceContract.methods.getAllActiveTokens().call({ from: walletAddress });
+      const response = await marketplaceContract.methods
+        .getAllActiveTokens()
+        .call({ from: walletAddress });
       console.log(response);
 
       const newProcessedTokens = new Set<string>();
-      const activeNFTs = response.map((item: any) => {
-        const tokenId = String(item[1]);
-        const collectionAddress = item[0];
-        const tokenKey = `${tokenId}-${collectionAddress}`;
+      const activeNFTs = response
+        .map((item: any) => {
+          const tokenId = String(item[1]);
+          const collectionAddress = item[0];
+          const tokenKey = `${tokenId}-${collectionAddress}`;
 
-        // Check if the token has already been processed
-        if (processedTokens.has(tokenKey)) return null;
+          // Check if the token has already been processed
+          if (processedTokens.has(tokenKey)) return null;
 
-        // Add the token key to the new set of processed tokens
-        newProcessedTokens.add(tokenKey);
+          // Add the token key to the new set of processed tokens
+          newProcessedTokens.add(tokenKey);
 
-        return {
-          tokenId: tokenId,
-          tokenPrice: String(item[2] / BigInt(1e18)),
-          collection: collectionAddress
-        };
-      }).filter(Boolean);
+          return {
+            tokenId: tokenId,
+            tokenPrice: String(item[2] / BigInt(1e18)),
+            collection: collectionAddress,
+          };
+        })
+        .filter(Boolean);
 
       // Update the processed tokens state
       setProcessedTokens(newProcessedTokens);
@@ -58,9 +64,14 @@ const Explore = (props: Props) => {
 
   return (
     <Layout>
-      {forSaleNFTData.map(item => (
-        <CardsForExplore key={`${item.tokenId}-${item.collection}`} item={item} />
-      ))}
+      <div className="flex flex-col gap-4">
+        {forSaleNFTData.map((item) => (
+          <CardsForExplore
+            key={`${item.tokenId}-${item.collection}`}
+            item={item}
+          />
+        ))}
+      </div>
     </Layout>
   );
 };
