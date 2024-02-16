@@ -25,7 +25,9 @@ contract Marketplace is ReentrancyGuard {
     // Maps for getting the User Collected NFTs
     mapping(address => address[]) _userToCollectionMap;
     mapping(address => mapping(address => uint256[])) _userToCollectionToTokenIdsMap;
-
+    // Map for getting Buyer of WalletAddress Seller of WalletAddress
+    mapping(address => address[]) private _buyerToWalletAddress;
+    mapping(address => address[]) private _sellerToWalletAddress;
     uint256 private _tokenIdCounter;
     struct TokenInfo {
         address collection;
@@ -158,6 +160,12 @@ contract Marketplace is ReentrancyGuard {
             _userToCollectionMap[msg.sender].push(collection);
         }
         _userToCollectionToTokenIdsMap[msg.sender][collection].push(tokenId);
+        _buyerToWalletAddress[msg.sender].push(
+            _walletContractMapping[collection][tokenId]
+        );
+        _sellerToWalletAddress[seller].push(
+            _walletContractMapping[collection][tokenId]
+        );
         emit NFTPurchased(collection, tokenId, msg.sender);
     }
 
@@ -333,6 +341,8 @@ contract Marketplace is ReentrancyGuard {
                 uint256 tokenId = tokenIds[j];
                 uint256 price = _tokenPrices[collection][tokenId];
                 // Should be owner to add to userNFTs list Yet to implement
+                if (BlastNFT(collection).nftOwner(tokenId) != msg.sender)
+                    continue;
                 userNFTs[index] = TokenInfo(collection, tokenId, price);
                 index++;
             }
@@ -354,5 +364,21 @@ contract Marketplace is ReentrancyGuard {
             collection
         ];
         return tokenIds;
+    }
+
+    function getBuyerToWalletAddress()
+        external
+        view
+        returns (address[] memory)
+    {
+        return _buyerToWalletAddress[msg.sender];
+    }
+
+    function getSellerToWalletAddress()
+        external
+        view
+        returns (address[] memory)
+    {
+        return _sellerToWalletAddress[msg.sender];
     }
 }

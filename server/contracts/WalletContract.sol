@@ -10,6 +10,7 @@ contract WalletContract {
     address payable private _seller;
     address private _marketPlace;
     bool private _hasSellerClaimed;
+    bool private _hasBuyerClaimed;
     modifier onlyOwner() {
         // only the marketplace owner modifier
         require(
@@ -28,6 +29,7 @@ contract WalletContract {
     }
     event SellerIsPaid(address seller, uint256 pricePaid);
     event BuyerGetsBackLocked(address buyer, uint256 priceBuyer);
+    event ContractDestroyed();
 
     // listForSale() in marketplace will deploy this contract.
     constructor(address marketplace, uint256 priceOfNFT) {
@@ -69,6 +71,7 @@ contract WalletContract {
         // Reset the price of NFT
         _priceOfNFT = 0;
         emit SellerIsPaid(_seller, sellerClaimAmount);
+        destroyContractIfClaimed();
     }
 
     function claimByBuyer() external payable onlyBuyer {
@@ -82,10 +85,28 @@ contract WalletContract {
             amountPaid = _depositedAmount;
             _buyer.transfer(_depositedAmount);
         }
+        _hasBuyerClaimed = true;
         emit BuyerGetsBackLocked(_buyer, amountPaid);
+        destroyContractIfClaimed();
     }
 
     function getContractAmount() external view returns (uint256) {
         return address(this).balance;
+    }
+
+    function getPriceOfNFT() external view returns (uint256) {
+        return _priceOfNFT;
+    }
+
+    function getDepositedAmount() external view returns (uint256) {
+        return _depositedAmount;
+    }
+
+    // Self destruct the contract if both buyer and seller have claimed
+    function destroyContractIfClaimed() private {
+        if (_hasSellerClaimed && _hasBuyerClaimed) {
+            emit ContractDestroyed();
+            selfdestruct(payable(_marketPlace));
+        }
     }
 }
