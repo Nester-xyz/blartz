@@ -33,8 +33,8 @@ contract WalletContract {
 
     // listForSale() in marketplace will deploy this contract.
     constructor(address marketplace, uint256 priceOfNFT) {
-        IBlast(0x4300000000000000000000000000000000000002)
-            .configureAutomaticYield();
+        // IBlast(0x4300000000000000000000000000000000000002)
+        //     .configureAutomaticYield();
         _marketPlace = marketplace;
         _priceOfNFT = priceOfNFT;
     }
@@ -106,7 +106,7 @@ contract WalletContract {
     function destroyContractIfClaimed() private {
         if (_hasSellerClaimed && _hasBuyerClaimed) {
             emit ContractDestroyed();
-            selfdestruct(payable(_marketPlace));
+            // selfdestruct(payable(_marketPlace));
         }
     }
 
