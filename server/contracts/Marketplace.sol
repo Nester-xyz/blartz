@@ -125,7 +125,10 @@ contract Marketplace is ReentrancyGuard {
         uint256 priceInBlast = _tokenPrices[collection][tokenId];
 
         // Ensure the buyer sends enough funds to purchase the NFT
-        require(msg.value >= priceInBlast, "Insufficient funds to purchase");
+        require(
+            msg.value >= calculatePrincipalAmount(priceInBlast),
+            "Insufficient funds to purchase"
+        );
 
         // Transfer funds to the seller
         address payable seller = payable(BlastNFT(collection).ownerOf(tokenId));
@@ -179,10 +182,16 @@ contract Marketplace is ReentrancyGuard {
     }
 
     function calculatePrincipalAmount(
-        uint256 targetYield,
-        uint256 lockupPeriodInDays
+        uint256 targetYield
     ) internal pure returns (uint256) {
-        // TODO: calculation logic here for yield generating deposit
+        // Convert targetYield from percentage to decimal
+        uint256 interestRate = 4; // 4% interest rate
+
+        // Calculate the principal amount
+        // Principal = Interest / InterestRate
+        uint256 principalAmount = (targetYield * (10 ** 16)) / interestRate;
+
+        return principalAmount;
     }
 
     function _removeFromSale(address collection, uint256 tokenId) internal {
