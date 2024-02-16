@@ -41,12 +41,12 @@ const Explore = (props: Props) => {
           collection: collectionAddress
         };
       }).filter(Boolean);
-
+      const filteredCollectedNFTs = activeNFTs.filter((nft: any) => nft !== null) as ActiveNFTDataType[];
       // Update the processed tokens state
       setProcessedTokens(newProcessedTokens);
 
       // Set the forSaleNFTData state with the filtered active NFTs
-      setForSaleNFTData(activeNFTs);
+      setForSaleNFTData(filteredCollectedNFTs);
     } catch (error) {
       console.log("Error getting the listed NFTs data (Marketplace):", error);
     }
