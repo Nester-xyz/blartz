@@ -231,7 +231,9 @@ contract Marketplace is ReentrancyGuard {
         // Set the price in the _tokenPrices mapping
         _tokenPrices[collection][tokenId] = priceInBlast;
         // Add to _activeCollectionToTokenIds and _activeCollectionsList;
-        _activeCollectionsList.push(collection);
+        if (!_isActiveCollectionAlreadyAdded(collection)) {
+            _activeCollectionsList.push(collection);
+        }
         _activeCollectionToTokenIds[collection].push(tokenId);
         // Add the collection to tokenId to walletAddress mapping
         WalletContract walletContract = new WalletContract(
@@ -244,6 +246,17 @@ contract Marketplace is ReentrancyGuard {
         _walletContractMapping[collection][tokenId] = address(walletContract);
         // Emit an event to indicate that the NFT is listed for sale
         emit NFTListed(collection, tokenId, msg.sender, priceInBlast);
+    }
+
+    function _isActiveCollectionAlreadyAdded(
+        address collection
+    ) internal view returns (bool) {
+        for (uint256 i = 0; i < _activeCollectionsList.length; i++) {
+            if (_activeCollectionsList[i] == collection) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function isNFTListed(
